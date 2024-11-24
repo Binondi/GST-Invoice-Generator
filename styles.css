@@ -14,36 +14,33 @@ body {
 }
 
 .container {
-  max-width: 1000px; /* Optimized width for desktops */
+  max-width: 1200px; /* Wider container for desktop */
   margin: 0 auto;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 30px;
 }
 
-/* Header Styles */
 h1, h2, h3 {
   text-align: center;
   margin-bottom: 20px;
-  color: #222;
-  font-weight: bold;
+  color: #333;
 }
 
-/* Form Fields */
 label {
   display: block;
-  margin-bottom: 8px;
+  margin: 10px 0 5px;
   font-weight: bold;
   color: #555;
 }
 
 input, textarea, button {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
   font-size: 16px;
 }
 
@@ -54,7 +51,7 @@ input:focus, textarea:focus {
 
 textarea {
   resize: none;
-  height: 100px;
+  height: 80px;
 }
 
 button {
@@ -63,7 +60,7 @@ button {
   border: none;
   cursor: pointer;
   font-size: 16px;
-  padding: 12px;
+  margin-top: 10px;
   transition: background-color 0.3s;
 }
 
@@ -73,114 +70,122 @@ button:hover {
 
 /* Invoice Styles */
 .invoice {
-  background-color: #fff;
-  padding: 30px;
-  border: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
   border-radius: 8px;
 }
 
-.invoice-header,
-.invoice-info,
-.bank-details {
-  margin-bottom: 30px;
-}
-
-.invoice-header p,
-.invoice-info p,
-.bank-details p {
-  font-size: 16px;
-  color: #555;
-}
-
-/* Desktop Layout for Invoice Sections */
-.info-section {
-  display: inline-block;
-  width: 48%; /* Two columns with spacing */
-  vertical-align: top;
+.invoice-header, .invoice-info, .bank-details {
   margin-bottom: 20px;
 }
 
-.info-section:last-child {
-  float: right;
+.invoice-header p, .invoice-info p, .bank-details p {
+  font-size: 14px;
+  color: #333;
+}
+
+.info-section {
+  display: inline-block;
+  width: 45%;
+  margin-right: 10%;
 }
 
 .info-section p {
   margin-bottom: 10px;
-  line-height: 1.4;
 }
 
-/* Product List Grid */
+/* Table Styles */
 .product-list {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns for desktop */
-  gap: 20px;
+  width: 100%; /* Ensures the table spans the full width of its container */
+  margin-top: 20px;
+  border-collapse: collapse; /* Removes unnecessary spacing between cells */
 }
 
 .product-item {
-  background-color: #f9f9f9;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  width: 100%; /* Forces full-width for table rows */
+  display: table; /* Ensures each product behaves like a table row */
+  margin-bottom: 0; /* Prevents margin from stacking between rows */
 }
 
 .product-item p {
-  margin-bottom: 8px;
+  display: table-cell; /* Aligns each `p` like a table cell */
+  padding: 10px;
+  border: 1px solid #ddd; /* Adds borders for better visibility */
   font-size: 14px;
-  color: #555;
+  color: #333;
 }
 
 /* Invoice Summary */
 .invoice-summary {
+  text-align: right;
   margin-top: 20px;
   font-size: 18px;
   font-weight: bold;
-  text-align: right;
 }
 
 .highlight {
   font-weight: bold;
-  color: #222;
+  color: #000;
 }
 
-/* Terms and Conditions Section */
+/* Terms and Conditions */
 .terms-and-conditions {
-  margin-top: 30px;
-  padding: 20px;
+  margin-top: 20px;
+  padding: 15px;
   border-top: 1px solid #ddd;
-  font-size: 14px;
-  color: #555;
+  background-color: #f9f9f9;
 }
 
-/* Bank Details */
-.bank-details h3 {
-  font-size: 18px;
+.terms-and-conditions p {
+  font-size: 14px;
   color: #333;
-  margin-bottom: 15px;
+}
+
+.bank-details h3 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.bank-details p {
+  font-size: 14px;
+  margin-top: 15px;
+  color: #555;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .info-section {
-    width: 100%; /* Stack sections vertically */
-    margin-bottom: 20px;
+    width: 100%; /* Stack invoice sections vertically */
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+
+  .product-item {
+    display: block; /* Stacks the product fields vertically on smaller screens */
+    margin-bottom: 15px;
+  }
+
+  .product-item p {
+    display: block; /* Adjust each field to its own row */
+    border: none; /* Optional: Remove borders for a cleaner look */
   }
 
   .product-list {
-    grid-template-columns: 1fr; /* Single column for smaller screens */
+    width: 100%; /* Ensure full-width usage on mobile */
   }
 
   .invoice-summary {
-    font-size: 16px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    padding: 40px; /* Increase padding for large screens */
+    text-align: left;
+    font-size: 14px;
   }
 
-  .product-list {
-    grid-template-columns: repeat(3, 1fr); /* Three columns for larger screens */
+  .terms-and-conditions p {
+    font-size: 12px;
+  }
+
+  .highlight {
+    font-size: 14px;
   }
 }
