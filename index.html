@@ -34,7 +34,7 @@
       <input type="text" id="billedFrom" required>
       
       <!-- Seller Address -->
-      <label for="sellerAddress">Seller Adress:</label>
+      <label for="sellerAddress">Seller Address:</label>
       <input type="text" id="sellerAddress" required>
 
       <!-- Purchase Order -->
@@ -76,10 +76,21 @@
       const productName = document.getElementById("productName").value;
       const productPrice = parseFloat(document.getElementById("productPrice").value);
       const sellerAddress = document.getElementById("sellerAddress").value;
-      
       const gstRate = parseFloat(document.getElementById("gstRate").value);
       const discountRate = parseFloat(document.getElementById("discountRate").value);
       const upiId = document.getElementById("upiId").value;
+
+      // Function to format date to dd/mm/yyyy
+      function formatDate(date) {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      }
+
+      // Format Issue and Due Dates
+      const formattedIssueDate = formatDate(new Date(issueDate));
+      const formattedDueDate = formatDate(new Date(dueDate));
 
       // Calculate discount, GST, and total price
       const discountAmount = (productPrice * discountRate) / 100;
@@ -90,8 +101,8 @@
       // Save data in localStorage
       const invoiceData = {
         invoiceNumber,
-        issueDate,
-        dueDate,
+        issueDate: formattedIssueDate,
+        dueDate: formattedDueDate,
         customerName,
         customerAddress,
         billedFrom,
