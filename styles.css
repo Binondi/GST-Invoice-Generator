@@ -100,6 +100,9 @@ button:hover {
   width: 100%; /* Ensures the table spans the full width of its container */
   margin-top: 20px;
   border-collapse: collapse; /* Removes unnecessary spacing between cells */
+  border: 1px solid #ddd; /* Adds a visible border around the table */
+  border-radius: 5px;
+  overflow: hidden; /* Prevents content overflow */
 }
 
 .product-item {
@@ -165,15 +168,27 @@ button:hover {
   .product-item {
     display: block; /* Stacks the product fields vertically on smaller screens */
     margin-bottom: 15px;
+    border: 1px solid #ddd; /* Ensures a visible border around each item */
+    border-radius: 5px; /* Optional: Adds rounded corners for a cleaner look */
+    background-color: #fff; /* Optional: Adds a contrasting background */
   }
 
   .product-item p {
     display: block; /* Adjust each field to its own row */
-    border: none; /* Optional: Remove borders for a cleaner look */
+    padding: 8px 10px; /* Adds padding for better readability */
+    border-bottom: 1px solid #ddd; /* Adds a separator between fields */
+  }
+
+  .product-item p:last-child {
+    border-bottom: none; /* Removes the bottom border for the last field */
   }
 
   .product-list {
     width: 100%; /* Ensure full-width usage on mobile */
+    border: 1px solid #ddd; /* Adds a visible outline around the product list */
+    border-radius: 5px; /* Optional: Rounded corners for a cleaner look */
+    overflow: hidden; /* Ensures no content overflows the borders */
+    margin-top: 10px;
   }
 
   .invoice-summary {
