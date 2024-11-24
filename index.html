@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Invoice Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>GST Invoice Generator</h1>
+    <form id="invoiceForm">
+      <!-- Invoice Number -->
+      <label for="invoiceNumber">Invoice Number:</label>
+      <input type="text" id="invoiceNumber" required>
+
+      <!-- Date of Issue -->
+      <label for="issueDate">Date of Issue:</label>
+      <input type="date" id="issueDate" required>
+
+      <!-- Due Date -->
+      <label for="dueDate">Due Date:</label>
+      <input type="date" id="dueDate" required>
+
+      <!-- Billed To -->
+      <label for="customerName">Customer Name:</label>
+      <input type="text" id="customerName" required>
+
+      <label for="customerAddress">Customer Address:</label>
+      <textarea id="customerAddress" required></textarea>
+
+      <!-- Billed From -->
+      <label for="billedFrom">Billed From (Your Name/Company):</label>
+      <input type="text" id="billedFrom" required>
+      
+      <!-- Seller Address -->
+      <label for="sellerAddress">Seller Adress:</label>
+      <input type="text" id="sellerAddress" required>
+
+      <!-- Purchase Order -->
+      <label for="purchaseOrder">Purchase Order:</label>
+      <input type="text" id="purchaseOrder" required>
+
+      <!-- Product Details -->
+      <label for="productName">Product Name:</label>
+      <input type="text" id="productName" required>
+
+      <label for="productPrice">Product Price (₹):</label>
+      <input type="number" id="productPrice" required>
+
+      <label for="gstRate">GST Rate (%):</label>
+      <input type="number" id="gstRate" value="18" required>
+
+      <label for="discountRate">Discount (%):</label>
+      <input type="number" id="discountRate" value="0" required>
+
+      <!-- Bank Details (UPI ID) -->
+      <label for="upiId">UPI ID (Bank Details):</label>
+      <input type="text" id="upiId" required>
+
+      <!-- Submit Button -->
+      <button type="button" onclick="saveInvoiceData()">Generate Invoice</button>
+    </form>
+  </div>
+
+  <script>
+    function saveInvoiceData() {
+      // Collect form data
+      const invoiceNumber = document.getElementById("invoiceNumber").value;
+      const issueDate = document.getElementById("issueDate").value;
+      const dueDate = document.getElementById("dueDate").value;
+      const customerName = document.getElementById("customerName").value;
+      const customerAddress = document.getElementById("customerAddress").value;
+      const billedFrom = document.getElementById("billedFrom").value;
+      const purchaseOrder = document.getElementById("purchaseOrder").value;
+      const productName = document.getElementById("productName").value;
+      const productPrice = parseFloat(document.getElementById("productPrice").value);
+      const sellerAddress = document.getElementById("sellerAddress").value;
+      
+      const gstRate = parseFloat(document.getElementById("gstRate").value);
+      const discountRate = parseFloat(document.getElementById("discountRate").value);
+      const upiId = document.getElementById("upiId").value;
+
+      // Calculate discount, GST, and total price
+      const discountAmount = (productPrice * discountRate) / 100;
+      const priceAfterDiscount = productPrice - discountAmount;
+      const gstAmount = (priceAfterDiscount * gstRate) / 100;
+      const totalPrice = priceAfterDiscount + gstAmount;
+
+      // Save data in localStorage
+      const invoiceData = {
+        invoiceNumber,
+        issueDate,
+        dueDate,
+        customerName,
+        customerAddress,
+        billedFrom,
+        purchaseOrder,
+        productName,
+        productPrice: productPrice.toFixed(2),
+        sellerAddress,
+        discountRate: discountRate.toFixed(2),
+        discountAmount: discountAmount.toFixed(2),
+        priceAfterDiscount: priceAfterDiscount.toFixed(2),
+        gstRate: gstRate.toFixed(2),
+        gstAmount: gstAmount.toFixed(2),
+        totalPrice: totalPrice.toFixed(2),
+        upiId
+      };
+      localStorage.setItem("invoiceData", JSON.stringify(invoiceData));
+
+      // Redirect to invoice page
+      window.location.href = "invoice.html";
+    }
+  </script>
+</body>
+</html>
