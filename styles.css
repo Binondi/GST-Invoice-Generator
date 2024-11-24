@@ -108,6 +108,7 @@ button:hover {
 .product-item {
   width: 100%; /* Forces full-width for table rows */
   display: table; /* Ensures each product behaves like a table row */
+  margin-top: 0;
   margin-bottom: 0; /* Prevents margin from stacking between rows */
 }
 
