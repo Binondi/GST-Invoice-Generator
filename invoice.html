@@ -69,15 +69,25 @@
   </div>
 
   <script>
-    // Fetch invoice data from localStorage
     // Function to format date as dd/mm/yyyy
 function formatDate(dateStr) {
   const date = new Date(dateStr);
   const day = String(date.getDate()).padStart(2, '0'); // Day as two digits
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Month as two digits (0-indexed)
   const year = date.getFullYear(); // Full year
-  
+
   return `${day}/${month}/${year}`;
+}
+
+// Print function (move outside the event listener)
+function printInvoice() {
+  const printContent = document.getElementById("invoice").outerHTML;
+  const originalContent = document.body.innerHTML;
+
+  document.body.innerHTML = printContent;
+  window.print();
+  document.body.innerHTML = originalContent;
+  location.reload(); // Reload to restore the original page
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -108,22 +118,9 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("displayTotalPriceSummary").innerText = invoiceData.totalPrice;
     document.getElementById("displayUpiId").innerText = invoiceData.upiId;
     document.getElementById("displaySellerName").innerText = invoiceData.billedFrom;
-
   } else {
     alert("No invoice data found!");
   }
-
-  // Print function
-  function printInvoice() {
-    const printContent = document.getElementById("invoice").outerHTML;
-    const originalContent = document.body.innerHTML;
-
-    document.body.innerHTML = printContent;
-    window.print();
-    document.body.innerHTML = originalContent;
-    location.reload();
-  }
-
 });
   </script>
 </body>
