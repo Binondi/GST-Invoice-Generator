@@ -8,39 +8,42 @@
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  background-color: #f9f9f9;
+  background-color: #f4f4f9;
   padding: 20px;
-}
-
-.container {
-  max-width: 1200px; /* Increased max-width for desktop */
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-}
-
-/* Headings and Titles */
-h1, h2, h3 {
-  text-align: center;
-  margin-bottom: 20px;
   color: #333;
 }
 
+.container {
+  max-width: 1000px; /* Optimized width for desktops */
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 30px;
+}
+
+/* Header Styles */
+h1, h2, h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #222;
+  font-weight: bold;
+}
+
+/* Form Fields */
 label {
   display: block;
-  margin: 10px 0 5px;
+  margin-bottom: 8px;
   font-weight: bold;
   color: #555;
 }
 
 input, textarea, button {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   font-size: 16px;
 }
 
@@ -51,7 +54,7 @@ input:focus, textarea:focus {
 
 textarea {
   resize: none;
-  height: 80px;
+  height: 100px;
 }
 
 button {
@@ -60,7 +63,7 @@ button {
   border: none;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 10px;
+  padding: 12px;
   transition: background-color 0.3s;
 }
 
@@ -70,61 +73,74 @@ button:hover {
 
 /* Invoice Styles */
 .invoice {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border: 1px solid #ddd;
+  background-color: #fff;
+  padding: 30px;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
 }
 
-.invoice-header, .invoice-info, .bank-details {
+.invoice-header,
+.invoice-info,
+.bank-details {
+  margin-bottom: 30px;
+}
+
+.invoice-header p,
+.invoice-info p,
+.bank-details p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Desktop Layout for Invoice Sections */
+.info-section {
+  display: inline-block;
+  width: 48%; /* Two columns with spacing */
+  vertical-align: top;
   margin-bottom: 20px;
 }
 
-.invoice-header p, .invoice-info p, .bank-details p {
-  font-size: 16px; /* Increased font size for better readability */
-  color: #333;
-}
-
-.info-section {
-  display: inline-block;
-  width: 48%; /* Reduced margin between sections */
-  margin-right: 4%;
+.info-section:last-child {
+  float: right;
 }
 
 .info-section p {
   margin-bottom: 10px;
+  line-height: 1.4;
 }
 
+/* Product List Grid */
 .product-list {
   margin-top: 30px;
-  display: grid; /* Use grid for product list */
-  grid-template-columns: 1fr 1fr 1fr; /* Three columns */
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns for desktop */
+  gap: 20px;
 }
 
 .product-item {
-  background-color: #fff;
+  background-color: #f9f9f9;
   padding: 15px;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
 }
 
 .product-item p {
+  margin-bottom: 8px;
   font-size: 14px;
-  color: #333;
+  color: #555;
 }
 
+/* Invoice Summary */
 .invoice-summary {
-  text-align: right;
-  font-size: 16px;
-  font-weight: bold;
   margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
 }
 
 .highlight {
   font-weight: bold;
-  color: #000;
+  color: #222;
 }
 
 /* Terms and Conditions Section */
@@ -132,95 +148,39 @@ button:hover {
   margin-top: 30px;
   padding: 20px;
   border-top: 1px solid #ddd;
-  background-color: #f9f9f9;
-}
-
-.terms-and-conditions p {
   font-size: 14px;
-  color: #333;
-}
-
-.bank-details h3 {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.bank-details p {
-  font-size: 14px;
-  margin-top: 15px;
   color: #555;
 }
 
-/* Responsive Design for Mobile */
-@media (max-width: 600px) {
-  .invoice-header, .invoice-info, .bank-details {
-    margin-top: 15px;
-    text-align: left;
-  }
-
-  .info-section {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 15px;
-  }
-
-  .product-item {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-
-  .product-item p {
-    font-size: 12px;
-  }
-
-  .invoice-summary {
-    font-size: 12px;
-  }
-
-  .terms-and-conditions p {
-    font-size: 12px;
-  }
-
-  .highlight {
-    font-size: 14px;
-  }
+/* Bank Details */
+.bank-details h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
 }
 
-/* Extra Large Screens */
-@media (min-width: 1200px) {
-  .container {
-    padding: 50px; /* Add more padding for large screens */
-  }
-
-  h1, h2, h3 {
-    font-size: 32px; /* Larger headings */
-  }
-
+/* Responsive Design */
+@media (max-width: 768px) {
   .info-section {
-    width: 48%; /* Slightly reduce the margin between the sections */
-    margin-right: 4%;
+    width: 100%; /* Stack sections vertically */
+    margin-bottom: 20px;
   }
 
   .product-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr; /* Four columns on very large screens */
-    gap: 20px;
-  }
-
-  .product-item {
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    grid-template-columns: 1fr; /* Single column for smaller screens */
   }
 
   .invoice-summary {
-    font-size: 18px; /* Larger font for desktop summaries */
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    padding: 40px; /* Increase padding for large screens */
   }
 
-  .terms-and-conditions p {
-    font-size: 16px; /* Increased font size for better readability */
+  .product-list {
+    grid-template-columns: repeat(3, 1fr); /* Three columns for larger screens */
   }
 }
