@@ -98,7 +98,7 @@ button:hover {
 /* Table Styles */
 .product-list {
   width: 100%; /* Ensures the table spans the full width of its container */
-  margin-top: 20px;
+  margin-top: 0px;
   border-collapse: collapse; /* Removes unnecessary spacing between cells */
   border: 1px solid #ddd; /* Adds a visible border around the table */
   border-radius: 5px;
