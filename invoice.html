@@ -59,10 +59,14 @@
         <p>Total Payable: <span id="displayTotalPriceSummary"></span></p>
       </div>
 
-      <!-- Bank Details Section -->
-      <div class="bank-details">
+      <!-- Bank/Payment Details Section -->
+      <div id="bank-details" class="bank-details">
         <h3>Bank Details (UPI ID)</h3>
-        <p><strong>UPI ID:</strong> <span id="displayUpiId" class="highlight"></span></p>
+        <p><strong>UPI ID:</strong> <span id="displayUpiId" class="highlight">example@upi</span></p>
+      </div>
+      <div id="paypal-details" class="paypal-details" style="display: none;">
+        <h3>PayPal Account</h3>
+        <p><strong>Email:</strong> <span id="paypalAccount" class="highlight">example@paypal.com</span></p>
       </div>
 
       <!-- Terms and Conditions Section -->
@@ -100,7 +104,7 @@
       location.reload();
     }
 
-    // Update currency selection
+    // Update currency and payment details
     function updateCurrency() {
       const selectedCurrency = document.getElementById("currency").value;
       const totalPriceInINR = parseFloat(localStorage.getItem("totalPriceInINR"));
@@ -108,12 +112,17 @@
       let convertedPrice;
       let currencySymbol;
 
+      // Handle currency-specific logic
       if (selectedCurrency === "USD") {
         convertedPrice = (totalPriceInINR * conversionRate).toFixed(2);
         currencySymbol = "$";
+        document.getElementById("bank-details").style.display = "none";
+        document.getElementById("paypal-details").style.display = "block";
       } else {
         convertedPrice = totalPriceInINR.toFixed(2);
         currencySymbol = "₹";
+        document.getElementById("bank-details").style.display = "block";
+        document.getElementById("paypal-details").style.display = "none";
       }
 
       // Update the currency display
