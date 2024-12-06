@@ -2,9 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Invoice</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Basic styles for demonstration */
+    .highlight {
+      color: #2a9d8f;
+    }
+    .container {
+      width: 80%;
+      margin: auto;
+      padding: 20px;
+    }
+    .currency-selector {
+      margin: 20px 0;
+    }
+    .product-list, .invoice-summary, .bank-details, .paypal-details, .terms-and-conditions {
+      margin-bottom: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -35,7 +55,7 @@
 
       <!-- Currency Selection -->
       <div class="currency-selector">
-        <label for="currency">Select Currency:</label>
+        <label for="currency"><strong>Select Currency:</strong></label>
         <select id="currency" onchange="updateCurrency()">
           <option value="INR" selected>INR (₹)</option>
           <option value="USD">USD ($)</option>
@@ -45,18 +65,18 @@
       <!-- Invoice Product List (Vertical Layout) -->
       <div class="product-list">
         <div class="product-item">
-          <p><strong>Product Name:</strong> <span id="displayProductName"></span></p>
-          <p><strong>Price:</strong> <span id="displayProductPrice"></span></p>
-          <p><strong>Discount (%):</strong> <span id="displayDiscountRate"></span></p>
-          <p><strong>Price After Discount:</strong> <span id="displayPriceAfterDiscount"></span></p>
-          <p><strong>GST (%):</strong> <span id="displayGstRate"></span></p>
-          <p><strong>GST Amount:</strong> <span id="displayGstAmount"></span></p>
-          <p><strong>Total:</strong> <span id="displayTotalPrice"></span></p>
+          <p><strong>Product Name:</strong> <span id="displayProductName" class="highlight"></span></p>
+          <p><strong>Price:</strong> <span id="displayProductPrice" class="highlight"></span></p>
+          <p><strong>Discount (%):</strong> <span id="displayDiscountRate" class="highlight"></span></p>
+          <p><strong>Price After Discount:</strong> <span id="displayPriceAfterDiscount" class="highlight"></span></p>
+          <p><strong>GST (%):</strong> <span id="displayGstRate" class="highlight"></span></p>
+          <p><strong>GST Amount:</strong> <span id="displayGstAmount" class="highlight"></span></p>
+          <p><strong>Total:</strong> <span id="displayTotalPrice" class="highlight"></span></p>
         </div>
       </div>
 
       <div class="invoice-summary">
-        <p>Total Payable: <span id="displayTotalPriceSummary"></span></p>
+        <p><strong>Total Payable:</strong> <span id="displayTotalPriceSummary" class="highlight"></span></p>
       </div>
 
       <!-- Bank/Payment Details Section -->
@@ -64,7 +84,7 @@
         <h3>Bank Details (UPI ID)</h3>
         <p><strong>UPI ID:</strong> <span id="displayUpiId" class="highlight">example@upi</span></p>
       </div>
-      <div id="paypal-details" class="paypal-details" style="display: none;">
+      <div id="paypal-details" class="paypal-details hidden">
         <h3>PayPal Account</h3>
         <p><strong>Email:</strong> <span id="paypalAccount" class="highlight">example@paypal.com</span></p>
       </div>
@@ -88,6 +108,7 @@
     // Function to format date as dd/mm/yyyy
     function formatDate(dateStr) {
       const date = new Date(dateStr);
+      if (isNaN(date)) return "Invalid Date";
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
@@ -109,6 +130,12 @@
       const selectedCurrency = document.getElementById("currency").value;
       const totalPriceInINR = parseFloat(localStorage.getItem("totalPriceInINR"));
 
+      // Validate totalPriceInINR
+      if (isNaN(totalPriceInINR)) {
+        alert("Total Price is missing or invalid!");
+        return;
+      }
+
       let convertedPrice;
       let currencySymbol;
 
@@ -116,18 +143,33 @@
       if (selectedCurrency === "USD") {
         convertedPrice = (totalPriceInINR * conversionRate).toFixed(2);
         currencySymbol = "$";
-        document.getElementById("bank-details").style.display = "none";
-        document.getElementById("paypal-details").style.display = "block";
+        document.getElementById("bank-details").classList.add("hidden");
+        document.getElementById("paypal-details").classList.remove("hidden");
       } else {
         convertedPrice = totalPriceInINR.toFixed(2);
         currencySymbol = "₹";
-        document.getElementById("bank-details").style.display = "block";
-        document.getElementById("paypal-details").style.display = "none";
+        document.getElementById("bank-details").classList.remove("hidden");
+        document.getElementById("paypal-details").classList.add("hidden");
       }
 
-      // Update the currency display
+      // Update the currency display for relevant fields
+      document.getElementById("displayProductPrice").innerText = `${currencySymbol} ${convertSingleValue(localStorage.getItem("productPrice"), selectedCurrency)}`;
+      document.getElementById("displayPriceAfterDiscount").innerText = `${currencySymbol} ${convertSingleValue(localStorage.getItem("priceAfterDiscount"), selectedCurrency)}`;
+      document.getElementById("displayGstAmount").innerText = `${currencySymbol} ${convertSingleValue(localStorage.getItem("gstAmount"), selectedCurrency)}`;
       document.getElementById("displayTotalPrice").innerText = `${currencySymbol} ${convertedPrice}`;
       document.getElementById("displayTotalPriceSummary").innerText = `${currencySymbol} ${convertedPrice}`;
+    }
+
+    // Helper function to convert individual price fields
+    function convertSingleValue(value, currency) {
+      const numericValue = parseFloat(value);
+      if (isNaN(numericValue)) return "0.00";
+
+      if (currency === "USD") {
+        return (numericValue * conversionRate).toFixed(2);
+      } else {
+        return numericValue.toFixed(2);
+      }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -135,29 +177,64 @@
 
       if (invoiceData) {
         // Populate the invoice
-        document.getElementById("displayInvoiceNumber").innerText = invoiceData.invoiceNumber;
+        document.getElementById("displayInvoiceNumber").innerText = invoiceData.invoiceNumber || "N/A";
         document.getElementById("displayIssueDate").innerText = formatDate(invoiceData.issueDate);
         document.getElementById("displayDueDate").innerText = formatDate(invoiceData.dueDate);
-        document.getElementById("displayCustomerName").innerText = invoiceData.customerName;
-        document.getElementById("displayCustomerAddress").innerText = invoiceData.customerAddress;
-        document.getElementById("displaySellerName").innerText = invoiceData.billedFrom;
-        document.getElementById("displaySellerAddress").innerText = invoiceData.sellerAddress;
-        document.getElementById("displayPurchaseOrder").innerText = invoiceData.purchaseOrder;
-        document.getElementById("displayProductName").innerText = invoiceData.productName;
-        document.getElementById("displayProductPrice").innerText = `₹ ${invoiceData.productPrice}`;
-        document.getElementById("displayDiscountRate").innerText = invoiceData.discountRate;
-        document.getElementById("displayPriceAfterDiscount").innerText = `₹ ${invoiceData.priceAfterDiscount}`;
-        document.getElementById("displayGstRate").innerText = invoiceData.gstRate;
-        document.getElementById("displayGstAmount").innerText = `₹ ${invoiceData.gstAmount}`;
-        document.getElementById("displayTotalPrice").innerText = `₹ ${invoiceData.totalPrice}`;
-        document.getElementById("displayUpiId").innerText = invoiceData.upiId;
+        document.getElementById("displayCustomerName").innerText = invoiceData.customerName || "N/A";
+        document.getElementById("displayCustomerAddress").innerText = invoiceData.customerAddress || "N/A";
+        document.getElementById("displaySellerName").innerText = invoiceData.billedFrom || "N/A";
+        document.getElementById("displaySellerAddress").innerText = invoiceData.sellerAddress || "N/A";
+        document.getElementById("displayPurchaseOrder").innerText = invoiceData.purchaseOrder || "N/A";
+        document.getElementById("displayProductName").innerText = invoiceData.productName || "N/A";
+        document.getElementById("displayProductPrice").innerText = `₹ ${parseFloat(invoiceData.productPrice).toFixed(2)}`;
+        document.getElementById("displayDiscountRate").innerText = invoiceData.discountRate !== undefined ? `${invoiceData.discountRate}%` : "0%";
+        document.getElementById("displayPriceAfterDiscount").innerText = `₹ ${parseFloat(invoiceData.priceAfterDiscount).toFixed(2)}`;
+        document.getElementById("displayGstRate").innerText = invoiceData.gstRate !== undefined ? `${invoiceData.gstRate}%` : "0%";
+        document.getElementById("displayGstAmount").innerText = `₹ ${parseFloat(invoiceData.gstAmount).toFixed(2)}`;
+        document.getElementById("displayTotalPrice").innerText = `₹ ${parseFloat(invoiceData.totalPrice).toFixed(2)}`;
+        document.getElementById("displayTotalPriceSummary").innerText = `₹ ${parseFloat(invoiceData.totalPrice).toFixed(2)}`;
+        document.getElementById("displayUpiId").innerText = invoiceData.upiId || "example@upi";
 
-        // Save total price in INR for conversion
-        localStorage.setItem("totalPriceInINR", invoiceData.totalPrice);
+        // Save total price and other fields in localStorage for conversion
+        localStorage.setItem("totalPriceInINR", parseFloat(invoiceData.totalPrice));
+        localStorage.setItem("productPrice", parseFloat(invoiceData.productPrice));
+        localStorage.setItem("priceAfterDiscount", parseFloat(invoiceData.priceAfterDiscount));
+        localStorage.setItem("gstAmount", parseFloat(invoiceData.gstAmount));
+
+        // Initialize currency display based on the current selection
+        updateCurrency();
       } else {
         alert("No invoice data found!");
+        // Optionally, you can set default/mock data here for testing
+        // setMockInvoiceData();
       }
     });
+
+    // Optional: Function to set mock data for testing
+    /*
+    function setMockInvoiceData() {
+      const mockData = {
+        invoiceNumber: "INV-1001",
+        issueDate: "2024-11-01",
+        dueDate: "2024-12-01",
+        customerName: "John Doe",
+        customerAddress: "123 Main Street, City, Country",
+        billedFrom: "Your Company Name",
+        sellerAddress: "456 Business Rd, City, Country",
+        purchaseOrder: "PO-7890",
+        productName: "Premium Product",
+        productPrice: 1000, // INR
+        discountRate: 10, // %
+        priceAfterDiscount: 900, // INR
+        gstRate: 18, // %
+        gstAmount: 162, // INR
+        totalPrice: 1062, // INR
+        upiId: "example@upi",
+      };
+      localStorage.setItem("invoiceData", JSON.stringify(mockData));
+      location.reload();
+    }
+    */
   </script>
 </body>
 </html>
