@@ -33,21 +33,30 @@
       <!-- Purchase Order -->
       <p><strong>Purchase Order:</strong> <span id="displayPurchaseOrder" class="highlight"></span></p>
 
+      <!-- Currency Selection -->
+      <div class="currency-selector">
+        <label for="currency">Select Currency:</label>
+        <select id="currency" onchange="updateCurrency()">
+          <option value="INR" selected>INR (₹)</option>
+          <option value="USD">USD ($)</option>
+        </select>
+      </div>
+
       <!-- Invoice Product List (Vertical Layout) -->
       <div class="product-list">
         <div class="product-item">
           <p><strong>Product Name:</strong> <span id="displayProductName"></span></p>
-          <p><strong>Price (₹):</strong> <span id="displayProductPrice"></span></p>
+          <p><strong>Price:</strong> <span id="displayProductPrice"></span></p>
           <p><strong>Discount (%):</strong> <span id="displayDiscountRate"></span></p>
-          <p><strong>Price After Discount (₹):</strong> <span id="displayPriceAfterDiscount"></span></p>
+          <p><strong>Price After Discount:</strong> <span id="displayPriceAfterDiscount"></span></p>
           <p><strong>GST (%):</strong> <span id="displayGstRate"></span></p>
-          <p><strong>GST Amount (₹):</strong> <span id="displayGstAmount"></span></p>
-          <p><strong>Total (₹):</strong> <span id="displayTotalPrice"></span></p>
+          <p><strong>GST Amount:</strong> <span id="displayGstAmount"></span></p>
+          <p><strong>Total:</strong> <span id="displayTotalPrice"></span></p>
         </div>
       </div>
 
       <div class="invoice-summary">
-        <p>Total Payable: ₹<span id="displayTotalPriceSummary"></span></p>
+        <p>Total Payable: <span id="displayTotalPriceSummary"></span></p>
       </div>
 
       <!-- Bank Details Section -->
@@ -69,59 +78,77 @@
   </div>
 
   <script>
+    // Conversion Rate (example: 1 INR = 0.012 USD)
+    const conversionRate = 0.012;
+
     // Function to format date as dd/mm/yyyy
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  const day = String(date.getDate()).padStart(2, '0'); // Day as two digits
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month as two digits (0-indexed)
-  const year = date.getFullYear(); // Full year
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
 
-  return `${day}/${month}/${year}`;
-}
+    // Print function
+    function printInvoice() {
+      const printContent = document.getElementById("invoice").outerHTML;
+      const originalContent = document.body.innerHTML;
+      document.body.innerHTML = printContent;
+      window.print();
+      document.body.innerHTML = originalContent;
+      location.reload();
+    }
 
-// Print function (move outside the event listener)
-function printInvoice() {
-  const printContent = document.getElementById("invoice").outerHTML;
-  const originalContent = document.body.innerHTML;
+    // Update currency selection
+    function updateCurrency() {
+      const selectedCurrency = document.getElementById("currency").value;
+      const totalPriceInINR = parseFloat(localStorage.getItem("totalPriceInINR"));
 
-  document.body.innerHTML = printContent;
-  window.print();
-  document.body.innerHTML = originalContent;
-  location.reload(); // Reload to restore the original page
-}
+      let convertedPrice;
+      let currencySymbol;
 
-document.addEventListener("DOMContentLoaded", function() {
-  // Fetch invoice data from localStorage
-  const invoiceData = JSON.parse(localStorage.getItem("invoiceData"));
+      if (selectedCurrency === "USD") {
+        convertedPrice = (totalPriceInINR * conversionRate).toFixed(2);
+        currencySymbol = "$";
+      } else {
+        convertedPrice = totalPriceInINR.toFixed(2);
+        currencySymbol = "₹";
+      }
 
-  if (invoiceData) {
-    // Populate the invoice
-    document.getElementById("displayInvoiceNumber").innerText = invoiceData.invoiceNumber;
+      // Update the currency display
+      document.getElementById("displayTotalPrice").innerText = `${currencySymbol} ${convertedPrice}`;
+      document.getElementById("displayTotalPriceSummary").innerText = `${currencySymbol} ${convertedPrice}`;
+    }
 
-    // Format and display the issue date and due date
-    document.getElementById("displayIssueDate").innerText = formatDate(invoiceData.issueDate);
-    document.getElementById("displayDueDate").innerText = formatDate(invoiceData.dueDate);
+    document.addEventListener("DOMContentLoaded", function () {
+      const invoiceData = JSON.parse(localStorage.getItem("invoiceData"));
 
-    // Continue populating other fields
-    document.getElementById("displayCustomerName").innerText = invoiceData.customerName;
-    document.getElementById("displayCustomerAddress").innerText = invoiceData.customerAddress;
-    document.getElementById("displaySellerName").innerText = invoiceData.sellerName;
-    document.getElementById("displaySellerAddress").innerText = invoiceData.sellerAddress;
-    document.getElementById("displayPurchaseOrder").innerText = invoiceData.purchaseOrder;
-    document.getElementById("displayProductName").innerText = invoiceData.productName;
-    document.getElementById("displayProductPrice").innerText = invoiceData.productPrice;
-    document.getElementById("displayDiscountRate").innerText = invoiceData.discountRate;
-    document.getElementById("displayPriceAfterDiscount").innerText = invoiceData.priceAfterDiscount;
-    document.getElementById("displayGstRate").innerText = invoiceData.gstRate;
-    document.getElementById("displayGstAmount").innerText = invoiceData.gstAmount;
-    document.getElementById("displayTotalPrice").innerText = invoiceData.totalPrice;
-    document.getElementById("displayTotalPriceSummary").innerText = invoiceData.totalPrice;
-    document.getElementById("displayUpiId").innerText = invoiceData.upiId;
-    document.getElementById("displaySellerName").innerText = invoiceData.billedFrom;
-  } else {
-    alert("No invoice data found!");
-  }
-});
+      if (invoiceData) {
+        // Populate the invoice
+        document.getElementById("displayInvoiceNumber").innerText = invoiceData.invoiceNumber;
+        document.getElementById("displayIssueDate").innerText = formatDate(invoiceData.issueDate);
+        document.getElementById("displayDueDate").innerText = formatDate(invoiceData.dueDate);
+        document.getElementById("displayCustomerName").innerText = invoiceData.customerName;
+        document.getElementById("displayCustomerAddress").innerText = invoiceData.customerAddress;
+        document.getElementById("displaySellerName").innerText = invoiceData.billedFrom;
+        document.getElementById("displaySellerAddress").innerText = invoiceData.sellerAddress;
+        document.getElementById("displayPurchaseOrder").innerText = invoiceData.purchaseOrder;
+        document.getElementById("displayProductName").innerText = invoiceData.productName;
+        document.getElementById("displayProductPrice").innerText = `₹ ${invoiceData.productPrice}`;
+        document.getElementById("displayDiscountRate").innerText = invoiceData.discountRate;
+        document.getElementById("displayPriceAfterDiscount").innerText = `₹ ${invoiceData.priceAfterDiscount}`;
+        document.getElementById("displayGstRate").innerText = invoiceData.gstRate;
+        document.getElementById("displayGstAmount").innerText = `₹ ${invoiceData.gstAmount}`;
+        document.getElementById("displayTotalPrice").innerText = `₹ ${invoiceData.totalPrice}`;
+        document.getElementById("displayUpiId").innerText = invoiceData.upiId;
+
+        // Save total price in INR for conversion
+        localStorage.setItem("totalPriceInINR", invoiceData.totalPrice);
+      } else {
+        alert("No invoice data found!");
+      }
+    });
   </script>
 </body>
 </html>
