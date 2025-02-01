@@ -91,46 +91,36 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-      // Fetch invoice data from localStorage
-      const invoiceData = JSON.parse(localStorage.getItem("invoiceData"));
+  // Fetch invoice data from localStorage
+  const invoiceData = JSON.parse(localStorage.getItem("invoiceData"));
 
-      if (invoiceData) {
-        // Populate the invoice
-        document.getElementById("displayInvoiceNumber").innerText = invoiceData.invoiceNumber;
-        document.getElementById("displayIssueDate").innerText = formatDate(invoiceData.issueDate);
-        document.getElementById("displayDueDate").innerText = formatDate(invoiceData.dueDate);
-        document.getElementById("displayCustomerName").innerText = invoiceData.customerName;
-        document.getElementById("displayCustomerAddress").innerText = invoiceData.customerAddress;
-        document.getElementById("displaySellerName").innerText = invoiceData.billedFrom;
-        document.getElementById("displaySellerAddress").innerText = invoiceData.sellerAddress;
-        document.getElementById("displayPurchaseOrder").innerText = invoiceData.purchaseOrder;
-        document.getElementById("displayProductName").innerText = invoiceData.productName;
-        document.getElementById("displayProductPrice").innerText = invoiceData.productPrice;
-        document.getElementById("displayDiscountRate").innerText = invoiceData.discountRate;
-        document.getElementById("displayPriceAfterDiscount").innerText = invoiceData.priceAfterDiscount;
-        document.getElementById("displayGstRate").innerText = invoiceData.gstRate;
-        document.getElementById("displayGstAmount").innerText = invoiceData.gstAmount;
-        document.getElementById("displayTotalPrice").innerText = invoiceData.totalPrice;
-        document.getElementById("displayTotalPriceSummary").innerText = invoiceData.totalPrice;
+  if (invoiceData) {
+    // Populate the invoice
+    document.getElementById("displayInvoiceNumber").innerText = invoiceData.invoiceNumber;
 
-        // Update payment method based on currency
-        const paymentMethodTitle = document.getElementById("paymentMethodTitle");
-        const paymentMethodLabel = document.getElementById("paymentMethodLabel");
-        const displayPaymentId = document.getElementById("displayPaymentId");
+    // Format and display the issue date and due date
+    document.getElementById("displayIssueDate").innerText = invoiceData.issueDate; // Already formatted in index.html
+    document.getElementById("displayDueDate").innerText = invoiceData.dueDate; // Already formatted in index.html
 
-        if (invoiceData.currency === "₹") {
-          paymentMethodTitle.innerText = "UPI";
-          paymentMethodLabel.innerText = "UPI ID:";
-        } else if (invoiceData.currency === "$") {
-          paymentMethodTitle.innerText = "PayPal";
-          paymentMethodLabel.innerText = "PayPal ID:";
-        }
-
-        displayPaymentId.innerText = invoiceData.upiId;
-      } else {
-        alert("No invoice data found!");
-      }
-    });
+    // Continue populating other fields
+    document.getElementById("displayCustomerName").innerText = invoiceData.customerName;
+    document.getElementById("displayCustomerAddress").innerText = invoiceData.customerAddress;
+    document.getElementById("displaySellerName").innerText = invoiceData.billedFrom; // Corrected to use billedFrom
+    document.getElementById("displaySellerAddress").innerText = invoiceData.sellerAddress;
+    document.getElementById("displayPurchaseOrder").innerText = invoiceData.purchaseOrder;
+    document.getElementById("displayProductName").innerText = invoiceData.productName;
+    document.getElementById("displayProductPrice").innerText = invoiceData.productPrice;
+    document.getElementById("displayDiscountRate").innerText = invoiceData.discountRate;
+    document.getElementById("displayPriceAfterDiscount").innerText = invoiceData.priceAfterDiscount;
+    document.getElementById("displayGstRate").innerText = invoiceData.gstRate;
+    document.getElementById("displayGstAmount").innerText = invoiceData.gstAmount;
+    document.getElementById("displayTotalPrice").innerText = invoiceData.totalPrice;
+    document.getElementById("displayTotalPriceSummary").innerText = invoiceData.totalPrice;
+    document.getElementById("displayUpiId").innerText = invoiceData.upiId;
+  } else {
+    alert("No invoice data found!");
+  }
+});
   </script>
 </body>
 </html>
