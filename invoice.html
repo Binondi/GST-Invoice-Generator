@@ -99,13 +99,13 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("displayInvoiceNumber").innerText = invoiceData.invoiceNumber;
 
     // Format and display the issue date and due date
-    document.getElementById("displayIssueDate").innerText = formatDate(invoiceData.issueDate);
-    document.getElementById("displayDueDate").innerText = formatDate(invoiceData.dueDate);
+    document.getElementById("displayIssueDate").innerText = invoiceData.issueDate; // Already formatted in index.html
+    document.getElementById("displayDueDate").innerText = invoiceData.dueDate; // Already formatted in index.html
 
     // Continue populating other fields
     document.getElementById("displayCustomerName").innerText = invoiceData.customerName;
     document.getElementById("displayCustomerAddress").innerText = invoiceData.customerAddress;
-    document.getElementById("displaySellerName").innerText = invoiceData.sellerName;
+    document.getElementById("displaySellerName").innerText = invoiceData.billedFrom; // Corrected to use billedFrom
     document.getElementById("displaySellerAddress").innerText = invoiceData.sellerAddress;
     document.getElementById("displayPurchaseOrder").innerText = invoiceData.purchaseOrder;
     document.getElementById("displayProductName").innerText = invoiceData.productName;
@@ -117,7 +117,6 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("displayTotalPrice").innerText = invoiceData.totalPrice;
     document.getElementById("displayTotalPriceSummary").innerText = invoiceData.totalPrice;
     document.getElementById("displayUpiId").innerText = invoiceData.upiId;
-    document.getElementById("displaySellerName").innerText = invoiceData.billedFrom;
   } else {
     alert("No invoice data found!");
   }
