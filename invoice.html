@@ -50,10 +50,9 @@
         <p>Total Payable: <span id="displayTotalPriceSummary"></span></p>
       </div>
 
-      <!-- Payment Method Section -->
-      <div class="payment-method">
-        <h3 id="paymentMethodTitle"></h3>
-        <p><strong id="paymentMethodLabel"></strong> <span id="displayPaymentId" class="highlight"></span></p>
+      <!-- Bank Details Section -->
+      <div class="bank-details">
+        <p><strong>UPI ID:</strong> <span id="displayUpiId" class="highlight"></span></p>
       </div>
 
       <!-- Terms and Conditions Section -->
@@ -70,27 +69,27 @@
 
   <script>
     // Function to format date as dd/mm/yyyy
-    function formatDate(dateStr) {
-      const date = new Date(dateStr);
-      const day = String(date.getDate()).padStart(2, '0'); // Day as two digits
-      const month = String(date.getMonth() + 1).padStart(2, '0'); // Month as two digits (0-indexed)
-      const year = date.getFullYear(); // Full year
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  const day = String(date.getDate()).padStart(2, '0'); // Day as two digits
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month as two digits (0-indexed)
+  const year = date.getFullYear(); // Full year
 
-      return `${day}/${month}/${year}`;
-    }
+  return `${day}/${month}/${year}`;
+}
 
-    // Print function (move outside the event listener)
-    function printInvoice() {
-      const printContent = document.getElementById("invoice").outerHTML;
-      const originalContent = document.body.innerHTML;
+// Print function (move outside the event listener)
+function printInvoice() {
+  const printContent = document.getElementById("invoice").outerHTML;
+  const originalContent = document.body.innerHTML;
 
-      document.body.innerHTML = printContent;
-      window.print();
-      document.body.innerHTML = originalContent;
-      location.reload(); // Reload to restore the original page
-    }
+  document.body.innerHTML = printContent;
+  window.print();
+  document.body.innerHTML = originalContent;
+  location.reload(); // Reload to restore the original page
+}
 
-    document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
   // Fetch invoice data from localStorage
   const invoiceData = JSON.parse(localStorage.getItem("invoiceData"));
 
