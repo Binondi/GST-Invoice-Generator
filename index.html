@@ -3,134 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GST Invoice Generator</title>
+  <title>Invoice</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>GST Invoice Generator</h1>
-    <form id="invoiceForm">
-      <!-- Invoice Number -->
-      <label for="invoiceNumber">Invoice Number:</label>
-      <input type="text" id="invoiceNumber" required>
+    <div id="invoice" class="invoice">
+      <h2>Invoice</h2>
 
-      <!-- Date of Issue -->
-      <label for="issueDate">Date of Issue:</label>
-      <input type="date" id="issueDate" required>
+      <!-- Invoice Header -->
+      <div class="invoice-header">
+        <p><strong>Invoice Number:</strong> <span id="displayInvoiceNumber" class="highlight"></span></p>
+        <p><strong>Date of Issue:</strong> <span id="displayIssueDate" class="highlight"></span></p>
+        <p><strong>Due Date:</strong> <span id="displayDueDate" class="highlight"></span></p>
+      </div>
 
-      <!-- Due Date -->
-      <label for="dueDate">Due Date:</label>
-      <input type="date" id="dueDate" required>
-
-      <!-- Billed To -->
-      <label for="customerName">Customer Name:</label>
-      <input type="text" id="customerName" required>
-
-      <label for="customerAddress">Customer Address:</label>
-      <textarea id="customerAddress" required></textarea>
-
-      <!-- Billed From -->
-      <label for="billedFrom">Billed From (Your Name/Company):</label>
-      <input type="text" id="billedFrom" required>
-      
-      <!-- Seller Address -->
-      <label for="sellerAddress">Seller Address:</label>
-      <input type="text" id="sellerAddress" required>
+      <!-- Billed To / Billed From -->
+      <div class="invoice-info">
+        <div class="info-section">
+          <p><strong>Billed To:</strong> <span id="displayCustomerName" class="highlight"></span></p>
+          <p><strong>Address:</strong> <span id="displayCustomerAddress" class="highlight"></span></p>
+        </div>
+        <div class="info-section">
+          <p><strong>Billed From:</strong> <span id="displaySellerName" class="highlight"></span></p>
+          <p><strong>Seller Address:</strong> <span id="displaySellerAddress" class="highlight"></span></p>
+        </div>
+      </div>
 
       <!-- Purchase Order -->
-      <label for="purchaseOrder">Purchase Order:</label>
-      <input type="text" id="purchaseOrder" required>
+      <p><strong>Purchase Order:</strong> <span id="displayPurchaseOrder" class="highlight"></span></p>
 
-      <!-- Product Details -->
-      <label for="productName">Product Name:</label>
-      <input type="text" id="productName" required>
+      <!-- Invoice Product List (Vertical Layout) -->
+      <div class="product-list">
+        <div class="product-item">
+          <p><strong>Product Name:</strong> <span id="displayProductName"></span></p>
+          <p><strong>Price:</strong> <span id="displayProductPrice"></span></p>
+          <p><strong>Discount (%):</strong> <span id="displayDiscountRate"></span></p>
+          <p><strong>Price After Discount:</strong> <span id="displayPriceAfterDiscount"></span></p>
+          <p><strong>GST (%):</strong> <span id="displayGstRate"></span></p>
+          <p><strong>GST Amount:</strong> <span id="displayGstAmount"></span></p>
+          <p><strong>Total:</strong> <span id="displayTotalPrice"></span></p>
+        </div>
+      </div>
 
-      <label for="productPrice">Product Price:</label>
-      <input type="number" id="productPrice" required>
+      <div class="invoice-summary">
+        <p>Total Payable: <span id="displayTotalPriceSummary"></span></p>
+      </div>
 
-      <!-- Currency Selector -->
-      <label for="currency">Currency:</label>
-      <select id="currency" required>
-        <option value="₹">Indian Rupees (₹)</option>
-        <option value="$">US Dollars ($)</option>
-      </select>
+      <!-- Payment Method Section -->
+      <div class="payment-method">
+        <h3 id="paymentMethodTitle"></h3>
+        <p><strong id="paymentMethodLabel"></strong> <span id="displayPaymentId" class="highlight"></span></p>
+      </div>
 
-      <label for="gstRate">GST Rate (%):</label>
-      <input type="number" id="gstRate" value="18" required>
-
-      <label for="discountRate">Discount (%):</label>
-      <input type="number" id="discountRate" value="0" required>
-
-      <!-- Bank Details (UPI ID) -->
-      <label for="upiId">UPI ID (Bank Details):</label>
-      <input type="text" id="upiId" required>
-
-      <!-- Submit Button -->
-      <button type="button" onclick="saveInvoiceData()">Generate Invoice</button>
-    </form>
+      <!-- Terms and Conditions Section -->
+      <div class="terms-and-conditions">
+        <h3>Terms and Conditions</h3>
+        <p>1. 50% payment is required before the work begins.</p>
+        <p>2. Remaining 50% payment is to be made upon the completion of the work.</p>
+        <p>3. This invoice is valid for a period of 30 days from the date of issuance.</p>
+        <p>4. Late payments will incur a 2% penalty per month on the outstanding amount.</p>
+      </div>
+    </div>
+    <button onclick="printInvoice()">Print Invoice</button>
   </div>
 
   <script>
-    function saveInvoiceData() {
-      // Collect form data
-      const invoiceNumber = document.getElementById("invoiceNumber").value;
-      const issueDate = document.getElementById("issueDate").value;
-      const dueDate = document.getElementById("dueDate").value;
-      const customerName = document.getElementById("customerName").value;
-      const customerAddress = document.getElementById("customerAddress").value;
-      const billedFrom = document.getElementById("billedFrom").value;
-      const purchaseOrder = document.getElementById("purchaseOrder").value;
-      const productName = document.getElementById("productName").value;
-      const productPrice = parseFloat(document.getElementById("productPrice").value);
-      const sellerAddress = document.getElementById("sellerAddress").value;
-      const gstRate = parseFloat(document.getElementById("gstRate").value);
-      const discountRate = parseFloat(document.getElementById("discountRate").value);
-      const currency = document.getElementById("currency").value;
-      const upiId = document.getElementById("upiId").value;
+    // Function to format date as dd/mm/yyyy
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const day = String(date.getDate()).padStart(2, '0'); // Day as two digits
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Month as two digits (0-indexed)
+      const year = date.getFullYear(); // Full year
 
-      // Function to format date to dd/mm/yyyy
-      function formatDate(date) {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-      }
-
-      // Format Issue and Due Dates
-      const formattedIssueDate = formatDate(new Date(issueDate));
-      const formattedDueDate = formatDate(new Date(dueDate));
-
-      // Calculate discount, GST, and total price
-      const discountAmount = (productPrice * discountRate) / 100;
-      const priceAfterDiscount = productPrice - discountAmount;
-      const gstAmount = (priceAfterDiscount * gstRate) / 100;
-      const totalPrice = priceAfterDiscount + gstAmount;
-
-      // Save data in localStorage
-      const invoiceData = {
-        invoiceNumber,
-        issueDate: formattedIssueDate,
-        dueDate: formattedDueDate,
-        customerName,
-        customerAddress,
-        billedFrom,
-        purchaseOrder,
-        productName,
-        productPrice: `${currency}${productPrice.toFixed(2)}`,
-        sellerAddress,
-        discountRate: discountRate.toFixed(2),
-        discountAmount: `${currency}${discountAmount.toFixed(2)}`,
-        priceAfterDiscount: `${currency}${priceAfterDiscount.toFixed(2)}`,
-        gstRate: gstRate.toFixed(2),
-        gstAmount: `${currency}${gstAmount.toFixed(2)}`,
-        totalPrice: `${currency}${totalPrice.toFixed(2)}`,
-        upiId
-      };
-      localStorage.setItem("invoiceData", JSON.stringify(invoiceData));
-
-      // Redirect to invoice page
-      window.location.href = "invoice.html";
+      return `${day}/${month}/${year}`;
     }
+
+    // Print function (move outside the event listener)
+    function printInvoice() {
+      const printContent = document.getElementById("invoice").outerHTML;
+      const originalContent = document.body.innerHTML;
+
+      document.body.innerHTML = printContent;
+      window.print();
+      document.body.innerHTML = originalContent;
+      location.reload(); // Reload to restore the original page
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      // Fetch invoice data from localStorage
+      const invoiceData = JSON.parse(localStorage.getItem("invoiceData"));
+
+      if (invoiceData) {
+        // Populate the invoice
+        document.getElementById("displayInvoiceNumber").innerText = invoiceData.invoiceNumber;
+        document.getElementById("displayIssueDate").innerText = formatDate(invoiceData.issueDate);
+        document.getElementById("displayDueDate").innerText = formatDate(invoiceData.dueDate);
+        document.getElementById("displayCustomerName").innerText = invoiceData.customerName;
+        document.getElementById("displayCustomerAddress").innerText = invoiceData.customerAddress;
+        document.getElementById("displaySellerName").innerText = invoiceData.billedFrom;
+        document.getElementById("displaySellerAddress").innerText = invoiceData.sellerAddress;
+        document.getElementById("displayPurchaseOrder").innerText = invoiceData.purchaseOrder;
+        document.getElementById("displayProductName").innerText = invoiceData.productName;
+        document.getElementById("displayProductPrice").innerText = invoiceData.productPrice;
+        document.getElementById("displayDiscountRate").innerText = invoiceData.discountRate;
+        document.getElementById("displayPriceAfterDiscount").innerText = invoiceData.priceAfterDiscount;
+        document.getElementById("displayGstRate").innerText = invoiceData.gstRate;
+        document.getElementById("displayGstAmount").innerText = invoiceData.gstAmount;
+        document.getElementById("displayTotalPrice").innerText = invoiceData.totalPrice;
+        document.getElementById("displayTotalPriceSummary").innerText = invoiceData.totalPrice;
+
+        // Update payment method based on currency
+        const paymentMethodTitle = document.getElementById("paymentMethodTitle");
+        const paymentMethodLabel = document.getElementById("paymentMethodLabel");
+        const displayPaymentId = document.getElementById("displayPaymentId");
+
+        if (invoiceData.currency === "₹") {
+          paymentMethodTitle.innerText = "UPI";
+          paymentMethodLabel.innerText = "UPI ID:";
+        } else if (invoiceData.currency === "$") {
+          paymentMethodTitle.innerText = "PayPal";
+          paymentMethodLabel.innerText = "PayPal ID:";
+        }
+
+        displayPaymentId.innerText = invoiceData.upiId;
+      } else {
+        alert("No invoice data found!");
+      }
+    });
   </script>
 </body>
 </html>
