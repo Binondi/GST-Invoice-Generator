@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,76 +8,56 @@
 <body>
   <div class="container">
     <div id="invoice" class="invoice">
-      <h2>Invoice</h2>
-
-      <!-- Invoice Header -->
-      <div class="invoice-header">
-        <p><strong>Invoice Number:</strong> <span id="displayInvoiceNumber" class="highlight"></span></p>
-        <p><strong>Date of Issue:</strong> <span id="displayIssueDate" class="highlight"></span></p>
-        <p><strong>Due Date:</strong> <span id="displayDueDate" class="highlight"></span></p>
-      </div>
-
-      <!-- Billed To / Billed From -->
-      <div class="invoice-info">
-        <div class="info-section">
-          <p><strong>Billed To:</strong> <span id="displayCustomerName" class="highlight"></span></p>
-          <p><strong>Address:</strong> <span id="displayCustomerAddress" class="highlight"></span></p>
-        </div>
-        <div class="info-section">
-          <p><strong>Billed From:</strong> <span id="displaySellerName" class="highlight"></span></p>
-          <p><strong>Seller Address:</strong> <span id="displaySellerAddress" class="highlight"></span></p>
-        </div>
-      </div>
-
-      <!-- Purchase Order -->
-      <p><strong>Purchase Order:</strong> <span id="displayPurchaseOrder" class="highlight"></span></p>
-
-      <!-- Invoice Product List (Vertical Layout) -->
-      <div class="product-list">
-        <div class="product-item">
-          <p><strong>Product Name:</strong> <span id="displayProductName"></span></p>
-          <p><strong>Price:</strong> <span id="displayProductPrice"></span></p>
-          <p><strong>Discount (%):</strong> <span id="displayDiscountRate"></span></p>
-          <p><strong>Price After Discount:</strong> <span id="displayPriceAfterDiscount"></span></p>
-          <p><strong>GST (%):</strong> <span id="displayGstRate"></span></p>
-          <p><strong>GST Amount:</strong> <span id="displayGstAmount"></span></p>
-          <p><strong>Total:</strong> <span id="displayTotalPrice"></span></p>
-        </div>
-      </div>
-
-      <div class="invoice-summary">
-        <p>Total Payable: <span id="displayTotalPriceSummary"></span></p>
-      </div>
-
-      <!-- Bank Details Section -->
-      <div class="bank-details">
-        <p><strong>UPI ID:</strong> <span id="displayUpiId" class="highlight"></span></p>
-      </div>
-
-      <!-- Terms and Conditions Section -->
-      <div class="terms-and-conditions">
-        <h3>Terms and Conditions</h3>
-        <p>1. 50% payment is required before the work begins.</p>
-        <p>2. Remaining 50% payment is to be made upon the completion of the work.</p>
-        <p>3. This invoice is valid for a period of 30 days from the date of issuance.</p>
-        <p>4. Late payments will incur a 2% penalty per month on the outstanding amount.</p>
-      </div>
-    </div>
-    <button onclick="printInvoice()">Print Invoice</button>
+      <h2>Invoice</h2><div class="invoice-header">
+    <p><strong>Invoice Number:</strong> <span id="displayInvoiceNumber" class="highlight"></span></p>
+    <p><strong>Date of Issue:</strong> <span id="displayIssueDate" class="highlight"></span></p>
+    <p><strong>Due Date:</strong> <span id="displayDueDate" class="highlight"></span></p>
   </div>
 
-  <script>
-    // Function to format date as dd/mm/yyyy
-function formatDate(dateStr) {
-  const date = new Date(dateStr);
-  const day = String(date.getDate()).padStart(2, '0'); // Day as two digits
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month as two digits (0-indexed)
-  const year = date.getFullYear(); // Full year
+  <div class="invoice-info">
+    <div class="info-section">
+      <p><strong>Billed To:</strong> <span id="displayCustomerName" class="highlight"></span></p>
+      <p><strong>Address:</strong> <span id="displayCustomerAddress" class="highlight"></span></p>
+    </div>
+    <div class="info-section">
+      <p><strong>Billed From:</strong> <span id="displaySellerName" class="highlight"></span></p>
+      <p><strong>Seller Address:</strong> <span id="displaySellerAddress" class="highlight"></span></p>
+    </div>
+  </div>
 
-  return `${day}/${month}/${year}`;
-}
+  <p><strong>Purchase Order:</strong> <span id="displayPurchaseOrder" class="highlight"></span></p>
 
-// Print function (move outside the event listener)
+  <div class="product-list">
+    <div class="product-item">
+      <p><strong>Product Name:</strong> <span id="displayProductName"></span></p>
+      <p><strong>Price:</strong> <span id="displayProductPrice"></span></p>
+      <p><strong>Discount (%):</strong> <span id="displayDiscountRate"></span></p>
+      <p><strong>Price After Discount:</strong> <span id="displayPriceAfterDiscount"></span></p>
+      <p><strong>GST (%):</strong> <span id="displayGstRate"></span></p>
+      <p><strong>GST Amount:</strong> <span id="displayGstAmount"></span></p>
+      <p><strong>Total:</strong> <span id="displayTotalPrice"></span></p>
+    </div>
+  </div>
+
+  <div class="invoice-summary">
+    <p>Total Payable: <span id="displayTotalPriceSummary"></span></p>
+  </div>
+
+  <div class="bank-details">
+    <p><strong id="paymentLabel">Payment ID:</strong> <span id="displayPaymentId" class="highlight"></span></p>
+  </div>
+
+  <div class="terms-and-conditions">
+    <h3>Terms and Conditions</h3>
+    <p>1. 50% payment is required before the work begins.</p>
+    <p>2. Remaining 50% payment is to be made upon the completion of the work.</p>
+    <p>3. This invoice is valid for a period of 30 days from the date of issuance.</p>
+    <p>4. Late payments will incur a 2% penalty per month on the outstanding amount.</p>
+  </div>
+</div>
+<button onclick="printInvoice()">Print Invoice</button>
+
+  </div>  <script>
 function printInvoice() {
   const printContent = document.getElementById("invoice").outerHTML;
   const originalContent = document.body.innerHTML;
@@ -86,25 +65,19 @@ function printInvoice() {
   document.body.innerHTML = printContent;
   window.print();
   document.body.innerHTML = originalContent;
-  location.reload(); // Reload to restore the original page
+  location.reload();
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  // Fetch invoice data from localStorage
   const invoiceData = JSON.parse(localStorage.getItem("invoiceData"));
 
   if (invoiceData) {
-    // Populate the invoice
     document.getElementById("displayInvoiceNumber").innerText = invoiceData.invoiceNumber;
-
-    // Format and display the issue date and due date
-    document.getElementById("displayIssueDate").innerText = invoiceData.issueDate; // Already formatted in index.html
-    document.getElementById("displayDueDate").innerText = invoiceData.dueDate; // Already formatted in index.html
-
-    // Continue populating other fields
+    document.getElementById("displayIssueDate").innerText = invoiceData.issueDate;
+    document.getElementById("displayDueDate").innerText = invoiceData.dueDate;
     document.getElementById("displayCustomerName").innerText = invoiceData.customerName;
     document.getElementById("displayCustomerAddress").innerText = invoiceData.customerAddress;
-    document.getElementById("displaySellerName").innerText = invoiceData.billedFrom; // Corrected to use billedFrom
+    document.getElementById("displaySellerName").innerText = invoiceData.billedFrom;
     document.getElementById("displaySellerAddress").innerText = invoiceData.sellerAddress;
     document.getElementById("displayPurchaseOrder").innerText = invoiceData.purchaseOrder;
     document.getElementById("displayProductName").innerText = invoiceData.productName;
@@ -115,11 +88,20 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("displayGstAmount").innerText = invoiceData.gstAmount;
     document.getElementById("displayTotalPrice").innerText = invoiceData.totalPrice;
     document.getElementById("displayTotalPriceSummary").innerText = invoiceData.totalPrice;
-    document.getElementById("displayUpiId").innerText = invoiceData.upiId;
+
+    // Show either UPI ID or PayPal ID based on currency
+    const paymentLabel = document.getElementById("paymentLabel");
+    const paymentId = document.getElementById("displayPaymentId");
+    if (invoiceData.currency === "₹") {
+      paymentLabel.innerText = "UPI ID:";
+      paymentId.innerText = invoiceData.upiId;
+    } else {
+      paymentLabel.innerText = "PayPal ID:";
+      paymentId.innerText = invoiceData.upiId; // Change this to PayPal ID if you store it separately
+    }
   } else {
     alert("No invoice data found!");
   }
 });
-  </script>
-</body>
+  </script></body>
 </html>
