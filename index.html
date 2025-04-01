@@ -124,7 +124,8 @@
         gstRate: gstRate.toFixed(2),
         gstAmount: `${currency}${gstAmount.toFixed(2)}`,
         totalPrice: `${currency}${totalPrice.toFixed(2)}`,
-        upiId
+        upiId,
+        currency : currency
       };
       localStorage.setItem("invoiceData", JSON.stringify(invoiceData));
 
